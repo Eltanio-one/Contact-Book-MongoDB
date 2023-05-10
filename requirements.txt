@@ -1,0 +1,6 @@
+pymongo.mongoclient
+pymongo
+dotenv
+pathlib
+os
+re

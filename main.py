@@ -99,7 +99,8 @@ def main():
     elif func == 'R':
         name = get_name()
         contacts_collection.find_one({'name': name})
-        
+        for arg in contact:
+            print(contact[arg])
 
     # update method
     elif func == 'U':

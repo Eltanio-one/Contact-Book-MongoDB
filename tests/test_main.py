@@ -1,6 +1,11 @@
-from main import get_name, get_address, get_mobile, get_email, inp
+from src.main import get_name, get_address, get_mobile, get_email, inp
 from unittest.mock import Mock, patch
 from pytest import raises
+import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 
 def test_get_name() -> None:

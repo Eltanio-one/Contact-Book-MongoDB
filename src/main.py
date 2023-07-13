@@ -1,4 +1,3 @@
-# from get_database import retrieve_database
 from pymongo.mongo_client import MongoClient
 from pymongo import ReturnDocument
 from dotenv import load_dotenv

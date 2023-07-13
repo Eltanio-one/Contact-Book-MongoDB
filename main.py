@@ -37,22 +37,14 @@ def get_name():
         if not first.isalpha() or not last.isalpha():
             print("Invalid name entered")
         else:
-<<<<<<< HEAD
-            return first + " " + last
-=======
             return f"{first} {last}"
->>>>>>> 97343ea1e25cc36c4f7b5ad89dc147fa2bdd9096
 
 
 def get_address():
     while True:
         address = input("Home Address: (house name/number, street name, postcode) ")
         if not (
-<<<<<<< HEAD
             _ := re.fullmatch(
-=======
-            verif := re.fullmatch(
->>>>>>> 97343ea1e25cc36c4f7b5ad89dc147fa2bdd9096
                 r"^([a-zA-z0-9])+, (?:[a-zA-Z]+)? ?([a-zA-Z]+), ([A-Z]{1,2}[0-9][0-9A-Z] [0-9][A-Z]{2})$",
                 address,
             )
@@ -85,11 +77,7 @@ def get_email():
     while True:
         email = input("Email: ")
         if not (
-<<<<<<< HEAD
             _ := re.fullmatch(
-=======
-            verif := re.fullmatch(
->>>>>>> 97343ea1e25cc36c4f7b5ad89dc147fa2bdd9096
                 r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
                 email,
             )

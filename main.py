@@ -6,8 +6,13 @@ from pathlib import Path
 import os
 import re
 
+
 def retrieve_database():
-    load_dotenv(dotenv_path=Path("/Users/danielhavers/OneDrive - Anthony Nolan/VSCode/Contact Book MongoDB/mongo.env"))
+    load_dotenv(
+        dotenv_path=Path(
+            "/Users/danielhavers/OneDrive - Anthony Nolan/VSCode/Contact Book MongoDB/mongo.env"
+        )
+    )
 
     uri = os.environ.get("MONGO_URI")
 
@@ -16,27 +21,34 @@ def retrieve_database():
 
     # Send a ping to confirm a successful connection
     try:
-        client.admin.command('ping')
+        client.admin.command("ping")
         print("Pinged your deployment. You successfully connected to MongoDB!")
         return client
     except Exception as e:
         print(e)
 
+
 def get_name():
     while True:
         try:
-            first, last = input("Name: ").split(' ')
+            first, last = input("Name: ").split(" ")
         except ValueError:
             continue
         if not first.isalpha() or not last.isalpha():
             print("Invalid name entered")
         else:
-            return first + ' ' + last
+            return first + " " + last
+
 
 def get_address():
     while True:
         address = input("Home Address: (house name/number, street name, postcode) ")
-        if not (verif := re.fullmatch(r"^([a-zA-z0-9])+, (?:[a-zA-Z]+)? ?([a-zA-Z]+), ([A-Z]{1,2}[0-9][0-9A-Z] [0-9][A-Z]{2})$", address)):
+        if not (
+            _ := re.fullmatch(
+                r"^([a-zA-z0-9])+, (?:[a-zA-Z]+)? ?([a-zA-Z]+), ([A-Z]{1,2}[0-9][0-9A-Z] [0-9][A-Z]{2})$",
+                address,
+            )
+        ):
             print("Invalid address entered")
             pass
         else:
@@ -59,77 +71,101 @@ def get_mobile():
                 pass
         else:
             return mobile
-        
+
 
 def get_email():
     while True:
         email = input("Email: ")
-        if not (verif := re.fullmatch(r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", email)):
+        if not (
+            _ := re.fullmatch(
+                r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+                email,
+            )
+        ):
             print("Invalid email address entered")
             pass
         else:
             return email
-        
+
+
 def inp():
     while True:
         func = input("What action would you like to perform? (CRUD) ")
-        if func.upper() not in ['C', 'R', 'U', 'D']:
+        if func.upper() not in ["C", "R", "U", "D"]:
             print("Please enter either C (create), R (read), U (update) or D (delete)")
             pass
         else:
             return func.upper()
 
+
 def main():
     client = retrieve_database()
-    # connect to db and collection 
-    db = client['contactledger']
-    contacts_collection = db['contacts']
+    # connect to db and collection
+    db = client["contactledger"]
+    contacts_collection = db["contacts"]
 
     # ask if user wants to CRUD
     func = inp()
-    
+
     # create method
-    if func == 'C':
-        name, address, mobile, email = get_name(), get_address(), get_mobile(), get_email()
-        contact = {'name': name, 'address': address, 'mobile': mobile, 'email': email}
+    if func == "C":
+        name, address, mobile, email = (
+            get_name(),
+            get_address(),
+            get_mobile(),
+            get_email(),
+        )
+        contact = {"name": name, "address": address, "mobile": mobile, "email": email}
         id = contacts_collection.insert_one(contact)
         print(f"Contact created! The unique ID for this entry is: {id.inserted_id}")
 
     # read method
-    elif func == 'R':
+    elif func == "R":
         name = get_name()
-        contact = contacts_collection.find_one({'name': name})
+        contact = contacts_collection.find_one({"name": name})
         for arg in contact:
             print(contact[arg])
 
     # update method
-    elif func == 'U':
+    elif func == "U":
         name = get_name()
         while True:
-            ask = input("What would you like to update? (address, mobile or email) ").lower()
-            if ask not in ['address', 'mobile', 'email']:
+            ask = input(
+                "What would you like to update? (address, mobile or email) "
+            ).lower()
+            if ask not in ["address", "mobile", "email"]:
                 pass
             else:
                 match ask:
-                    case 'address':
+                    case "address":
                         address = get_address()
-                        contacts_collection.find_one_and_update({'name': name},
-                                                                { '$set': {'address': address} }, return_document=ReturnDocument.AFTER)
-                    case 'mobile':
+                        contacts_collection.find_one_and_update(
+                            {"name": name},
+                            {"$set": {"address": address}},
+                            return_document=ReturnDocument.AFTER,
+                        )
+                    case "mobile":
                         mobile = get_mobile()
-                        contacts_collection.find_one_and_update({'name': name},
-                                                                { '$set': {'mobile': mobile} }, return_document=ReturnDocument.AFTER)
-                    case 'email':
+                        contacts_collection.find_one_and_update(
+                            {"name": name},
+                            {"$set": {"mobile": mobile}},
+                            return_document=ReturnDocument.AFTER,
+                        )
+                    case "email":
                         email = get_email()
-                        contacts_collection.find_one_and_update({'name': name},
-                                                                { '$set': {'email': email} }, return_document=ReturnDocument.AFTER)
+                        contacts_collection.find_one_and_update(
+                            {"name": name},
+                            {"$set": {"email": email}},
+                            return_document=ReturnDocument.AFTER,
+                        )
                 print("Contact successfully updated")
                 break
 
-    elif func == 'D':
+    elif func == "D":
         name = get_name()
-        contacts_collection.find_one_and_delete({'name': name})
+        contacts_collection.find_one_and_delete({"name": name})
         print("Contact successfully deleted")
+
 
 if __name__ == "__main__":
     main()

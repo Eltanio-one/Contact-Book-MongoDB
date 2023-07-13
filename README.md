@@ -23,6 +23,3 @@ main() asks the user for their method via inp(), and then based on the input wil
 
 # requirements.txt
 Lists the libraries and packages required for this script to work
-
-# mongo.env
-Contains the pseudo username and password needed to access the mongodb.

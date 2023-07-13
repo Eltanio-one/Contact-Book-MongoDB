@@ -6,7 +6,7 @@ import os
 import re
 
 
-def retrieve_database():
+def retrieve_database() -> MongoClient:
     load_dotenv(
         dotenv_path=Path(
             "/Users/danielhavers/OneDrive - Anthony Nolan/VSCode/Contact Book MongoDB/mongo.env"
@@ -27,7 +27,7 @@ def retrieve_database():
         print(e)
 
 
-def get_name():
+def get_name() -> str:
     while True:
         try:
             first, last = input("Name: ").split(" ")
@@ -39,7 +39,7 @@ def get_name():
             return f"{first} {last}"
 
 
-def get_address():
+def get_address() -> str:
     while True:
         address = input("Home Address: (house name/number, street name, postcode) ")
         if not (
@@ -54,7 +54,7 @@ def get_address():
             return address
 
 
-def get_mobile():
+def get_mobile() -> str:
     while True:
         mobile = input("Mobile number (with area code and no whitespace): ")
         if not (verif := re.fullmatch(r"^\+(\d{2})(\d{10})$", mobile)):
@@ -72,7 +72,7 @@ def get_mobile():
             return mobile
 
 
-def get_email():
+def get_email() -> str:
     while True:
         email = input("Email: ")
         if not (
@@ -87,7 +87,7 @@ def get_email():
             return email
 
 
-def inp():
+def inp() -> str:
     while True:
         func = input("What action would you like to perform? (CRUD) ")
         if func.upper() not in ["C", "R", "U", "D"]:
@@ -97,7 +97,7 @@ def inp():
             return func.upper()
 
 
-def main():
+def main() -> None:
     client = retrieve_database()
     # connect to db and collection
     db = client["contactledger"]
